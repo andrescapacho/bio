@@ -24,7 +24,7 @@
       font-family: 'Syne', sans-serif;
       position: relative;
       cursor: none; 
-      -webkit-font-smoothing: antialiased; /* Mejora la nitidez de la fuente */
+      -webkit-font-smoothing: antialiased;
     }
 
     a, button { cursor: none !important; }
@@ -191,11 +191,24 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* AJUSTES PARA MÓVILES */
     @media (max-width: 768px) {
-      #cursor { display: none; }
+      #cursor { display: none; } /* En móvil no hay mouse, se oculta el cursor verde */
       body { cursor: auto; }
-      .sys-info { display: none; }
+      
+      .sys-info { 
+        left: 0; 
+        width: 100%; 
+        text-align: center; 
+        bottom: 20px; 
+        font-size: 8px; /* Un poco más pequeño para que quepa bien */
+      }
+      
       a, button { cursor: pointer !important; }
+      
+      .profile-container {
+        width: 140px; height: 140px;
+      }
     }
   </style>
 </head>
