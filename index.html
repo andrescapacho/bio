@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Andres Capacho</title>
+  <title>Andres Capacho | Técnico de Sistemas</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌎</text></svg>">
+  
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,6 +13,8 @@
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
+      background: #0a0f0d;
+      color: #e8e4dc;
     }
 
     body {
@@ -18,12 +22,13 @@
       align-items: center;
       justify-content: center;
       font-family: 'Syne', sans-serif;
-      background: #0a0f0d;
       position: relative;
-      cursor: none; /* Cursor personalizado */
+      cursor: none; 
+      -webkit-font-smoothing: antialiased; /* Mejora la nitidez de la fuente */
     }
 
-    /* CURSOR */
+    a, button { cursor: none !important; }
+
     #cursor {
       width: 8px; height: 8px;
       background: #00c27a;
@@ -32,30 +37,26 @@
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
+      transition: width 0.2s, height 0.2s, background 0.2s, border 0.2s;
     }
     #cursor.big {
-      width: 36px; height: 36px;
-      background: transparent;
+      width: 30px; height: 30px;
+      background: rgba(0, 194, 122, 0.1);
       border: 1px solid #00c27a;
     }
 
-    /* FONDO: grilla */
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: #0d0d0d;
-    }
+    .bg-container { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+    
     .bg-grid {
-      position: fixed;
-      inset: 0;
+      position: absolute; inset: -100px;
       background-image:
         linear-gradient(#2a2a2a 1px, transparent 1px),
         linear-gradient(90deg, #2a2a2a 1px, transparent 1px);
       background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
-      opacity: 0.4;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
+      opacity: 0.3;
     }
+
     .bg-circle {
       position: fixed;
       right: -80px; top: 50%;
@@ -67,138 +68,152 @@
       pointer-events: none;
     }
     .bg-circle::after {
-      content: '';
-      position: absolute;
+      content: ''; position: absolute;
       top: 20px; left: 20px; right: 20px; bottom: 20px;
-      border: 1px dashed #2a2a2a;
-      border-radius: 50%;
+      border: 1px dashed #2a2a2a; border-radius: 50%;
     }
     .bg-circle-dot {
-      position: absolute;
-      top: -4px; left: 50%;
+      position: absolute; top: -4px; left: 50%;
       transform: translateX(-50%);
       width: 8px; height: 8px;
-      background: #00c27a;
-      border-radius: 50%;
+      background: #00c27a; border-radius: 50%;
     }
     @keyframes rotar { to { transform: translateY(-50%) rotate(360deg); } }
 
-    /* TARJETA CENTRAL */
+    .sys-info {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: rgba(0, 194, 122, 0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: #00c27a;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
     .card {
-      position: relative;
-      z-index: 2;
+      position: relative; z-index: 2;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: flex; flex-direction: column; align-items: center;
       animation: fadeIn 1.2s ease both;
     }
 
-    /* ESPACIO PARA LA FOTO */
     .profile-container {
-      width: 180px;
-      height: 180px;
+      width: 170px; height: 170px;
       margin-bottom: 2rem;
       position: relative;
-      animation: fadeIn 1s 0.2s both;
     }
     .profile-img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(0, 200, 122, 0.3);
-      padding: 5px;
-      filter: grayscale(40%);
-      transition: filter 0.3s ease, border-color 0.3s ease;
+      border: 2px solid rgba(0, 194, 122, 0.3);
+      padding: 6px;
+      transition: all 0.4s ease;
     }
     .profile-container:hover .profile-img {
-      filter: grayscale(0%);
       border-color: #00c27a;
+      box-shadow: 0 0 30px rgba(0, 194, 122, 0.2);
     }
-    /* Adorno sutil alrededor de la foto */
     .profile-container::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border: 1px solid rgba(0, 200, 122, 0.1);
+      content: ''; position: absolute; inset: -12px;
+      border: 1px solid rgba(0, 194, 122, 0.1);
       border-radius: 50%;
-      animation: pulse 4s infinite;
+      animation: pulse 4s infinite ease-in-out;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.3; }
-      50% { transform: scale(1.05); opacity: 0.6; }
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.1); opacity: 0.5; }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    /* NOMBRE */
     .name {
-      font-size: clamp(2.2rem, 8vw, 5.5rem);
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
       font-weight: 700;
-      letter-spacing: 0.12em;
-      color: #e8e4dc;
-      line-height: 1;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
+      line-height: 1;
     }
 
-    /* LÍNEA DECORATIVA */
     .line {
-      width: 48px;
-      height: 1px;
-      background: rgba(0,200,120,0.5);
-      margin: 1.4rem auto;
-      animation: lineGrow 0.8s 0.5s both;
-    }
-    @keyframes lineGrow {
-      from { width: 0; opacity: 0; }
-      to   { width: 48px; opacity: 1; }
+      width: 80px; height: 2px;
+      background: #00c27a;
+      margin: 1.5rem auto;
+      box-shadow: 0 0 10px rgba(0, 194, 122, 0.5);
     }
 
-    /* ROL */
     .role {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(0.6rem, 1.5vw, 0.75rem);
-      letter-spacing: 0.3em;
-      color: rgba(0,200,120,0.7);
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      letter-spacing: 0.4em;
+      color: rgba(0, 200, 122, 0.8);
       text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
 
-    /* ICONOS */
-    .socials {
-      display: flex;
-      gap: 1.4rem;
-      margin-top: 2.8rem;
+    .skills {
+      display: flex; gap: 0.8rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(232, 228, 220, 0.4);
     }
+    .skill-tag::before { content: '['; color: #00c27a; }
+    .skill-tag::after { content: ']'; color: #00c27a; }
+
+    .socials { display: flex; gap: 1.5rem; margin-top: 2.5rem; }
     .socials a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      width: 46px; height: 46px;
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 50%;
-      color: rgba(200,196,188,0.6);
-      text-decoration: none;
-      transition: border-color 0.25s, color 0.25s, transform 0.2s;
+      color: rgba(232, 228, 220, 0.5);
+      transition: all 0.3s ease;
     }
     .socials a:hover {
-      border-color: rgba(0,200,120,0.6);
-      color: rgba(0,220,130,0.9);
-      transform: translateY(-3px);
+      border-color: #00c27a;
+      color: #00c27a;
+      transform: translateY(-5px);
     }
-    .socials svg { width: 16px; height: 16px; fill: currentColor; }
+    .socials svg { width: 18px; height: 18px; fill: currentColor; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      #cursor { display: none; }
+      body { cursor: auto; }
+      .sys-info { display: none; }
+      a, button { cursor: pointer !important; }
+    }
   </style>
 </head>
 <body>
+
   <div id="cursor"></div>
-  <div class="bg"></div>
-  <div class="bg-grid"></div>
-  <div class="bg-circle"><div class="bg-circle-dot"></div></div>
+
+  <div class="sys-info">
+    <span class="status-dot"></span>
+    System Status: Operational // <span id="clock">00:00:00</span>
+  </div>
+
+  <div class="bg-container">
+    <div class="bg-grid"></div>
+    <div class="bg-circle">
+      <div class="bg-circle-dot"></div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="profile-container">
@@ -208,6 +223,12 @@
     <h1 class="name">Andres Capacho</h1>
     <div class="line"></div>
     <p class="role">Técnico de Sistemas</p>
+
+    <div class="skills">
+      <span class="skill-tag">Hardware</span>
+      <span class="skill-tag">Software</span>
+      <span class="skill-tag">Networks</span>
+    </div>
 
     <div class="socials">
       <a href="https://www.linkedin.com/in/andres-capacho-4076b4290" title="LinkedIn">
@@ -227,11 +248,26 @@
 
   <script>
     const cursor = document.getElementById('cursor');
+    const bgGrid = document.querySelector('.bg-grid');
+    const clockElement = document.getElementById('clock');
+    
+    function updateClock() {
+      const now = new Date();
+      clockElement.textContent = now.toTimeString().split(' ')[0];
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
     document.addEventListener('mousemove', e => {
       cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
+      cursor.style.top = e.clientY + 'px';
+
+      const x = (e.clientX - window.innerWidth / 2) / 45;
+      const y = (e.clientY - window.innerHeight / 2) / 45;
+      bgGrid.style.transform = `translate(${x}px, ${y}px)`;
     });
-    document.querySelectorAll('a').forEach(el => {
+
+    document.querySelectorAll('.socials a').forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('big'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
     });
